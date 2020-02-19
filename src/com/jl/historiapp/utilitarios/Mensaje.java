@@ -11,4 +11,5 @@ package com.jl.historiapp.utilitarios;
  */
 public class Mensaje {
     public static String EVOLUCION_NO_EXISTE="Evolución no existe";
+    public static String LISTA_EVOLUCIONES_VACIA="Lista de Evoluciones Vacía";
 }
