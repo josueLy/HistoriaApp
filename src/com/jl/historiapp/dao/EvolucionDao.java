@@ -8,6 +8,8 @@ package com.jl.historiapp.dao;
 import com.jl.historia.entidad.Evolucion;
 import com.jl.historia.entidad.Historia;
 import com.jl.historia.entidad.Receta;
+import com.jl.historiapp.utilitarios.ExcepcionGeneral;
+import com.jl.historiapp.utilitarios.Mensaje;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +51,8 @@ public class EvolucionDao {
                     "SELECT e FROM Evolucion e where e.estado=1 and e.id= :id", Evolucion.class);
             query.setParameter("id", idEvolucion);
             evolucion = (Evolucion) query.getSingleResult();
+            if(evolucion==null)
+                throw new ExcepcionGeneral(Mensaje.EVOLUCION_NO_EXISTE);
         } catch (Exception excepcion) {
             System.out.println(excepcion.getMessage());
         }
@@ -66,6 +70,7 @@ public class EvolucionDao {
             query = gestorEntidad.createQuery("SELECT e FROM Evolucion e where e.id= :id");
             query.setParameter("id", id);
             evolucion = (Evolucion) query.getSingleResult();
+//            if()
         } catch (Exception excepcion) {
             System.out.println(excepcion.getMessage());
         }
