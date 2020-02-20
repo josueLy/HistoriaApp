@@ -1,132 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<queryString language="SQL">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receta" columnCount="2" printOrder="Horizontal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="421" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9f7f2181-78e7-4964-a631-96afaaebcc7e">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="121"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="prox_consulta" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="receta" class="java.lang.String"/>
+	<queryString>
 		<![CDATA[SELECT
-     Receta.`Medicinas` AS Receta_Medicinas,
-     Historia.`Id` AS Historia_Id,
-     Receta.`HistoriaId` AS Receta_HistoriaId,
-     Paciente.`Nombre` AS Paciente_Nombre
+     receta.`Medicinas` AS receta_Medicinas,
+     receta.`Fecha` AS receta_Fecha,
+     paciente.`Nombre` AS paciente_Nombre,
+     historia.`pacienteId` AS historia_pacienteId
 FROM
-     `Historia` Historia INNER JOIN `Receta` Receta ON Historia.`Id` = Receta.`HistoriaId`
-     INNER JOIN `Paciente` Paciente ON Historia.`pacienteId` = Paciente.`Id`]]>
+     `paciente` paciente INNER JOIN `historia` historia ON paciente.`Id` = historia.`pacienteId`
+     INNER JOIN `receta` receta ON historia.`Id` = receta.`HistoriaId`
+WHERE receta.id= $P{receta};]]>
 	</queryString>
-	<field name="Receta_Medicinas" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Paciente_Nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="receta_Medicinas" class="java.lang.String"/>
+	<field name="receta_Fecha" class="java.sql.Date"/>
+	<field name="paciente_Nombre" class="java.lang.String"/>
+	<field name="historia_pacienteId" class="java.lang.Integer"/>
 	<background>
-		
-                <band height="700">
-                        <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
-                                <reportElement x="74" y="167" width="421" height="404"/>
-                                <imageExpression><![CDATA["/spring/HistoriaApp/src/images/Receta-2.jpg"]]></imageExpression>
-                        </image>
-                </band>
+		<band height="595" splitType="Stretch">
+			<image>
+				<reportElement x="405" y="0" width="437" height="595" uuid="0f33941b-d8c1-415d-93f2-b285ddb7ec6b">
+					<property name="net.sf.jasperreports.export.pdf.tag.tr" value="full"/>
+				</reportElement>
+				<box leftPadding="18"/>
+				<imageExpression><![CDATA["D:\\Josue\\Cachuelos\\HistoriaApp\\src\\images\\receta.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement style="Row" x="0" y="0" width="420" height="595" uuid="c074be61-0d32-4769-95fa-337602917fa8"/>
+				<imageExpression><![CDATA["D:\\Josue\\Cachuelos\\HistoriaApp\\src\\images\\receta.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="86" y="172" width="199" height="213" uuid="534deaf7-7acd-4068-bea6-33dbf4b0565c"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receta_Medicinas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="111" width="304" height="27" uuid="3b8021c7-1623-4187-8d8c-cb2191b18d34"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paciente_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="530" width="117" height="29" uuid="ef38656f-a809-4421-a378-1dcce0f7d787"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{receta_Fecha})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="528" width="112" height="31" uuid="ec7a6d95-dfe8-4ff4-a2cc-c15a1bf7fe0a"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{prox_consulta})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="508" y="111" width="285" height="27" uuid="e86729b9-afc5-4b63-852e-3005fd14266a"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paciente_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="508" y="172" width="179" height="213" uuid="2a3dc8b5-3376-446b-b293-03e5a8b3f58a"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receta_Medicinas}]]></textFieldExpression>
+			</textField>
+		</band>
 	</background>
-	<title>
-		<band height="58" splitType="Stretch">
-			<line>
-				<reportElement x="0" y="8" width="555" height="1"/>
-			</line>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1"/>
-			</line>
-			<staticText>
-				<reportElement x="65" y="13" width="424" height="35"/>
-				<textElement textAlignment="Center">
-					<font size="26" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Classic template]]></text>
-			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="40" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="139" height="20"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Receta_Medicinas]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="139" y="0" width="416" height="20"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{Receta_Medicinas}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="20" width="139" height="20"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Paciente_Nombre]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="139" y="20" width="416" height="20"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{Paciente_Nombre}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="26" splitType="Stretch">
-			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="516" y="6" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="342" y="6" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField" x="1" y="6" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>

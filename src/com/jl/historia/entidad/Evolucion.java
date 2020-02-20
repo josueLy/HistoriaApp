@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Evolucion", catalog = "historiasdb", schema = "")
 public class Evolucion implements Serializable {
-///intento de push
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

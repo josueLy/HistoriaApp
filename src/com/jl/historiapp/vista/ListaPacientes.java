@@ -170,6 +170,7 @@ public class ListaPacientes extends javax.swing.JFrame {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         this.crudHistoria.llenarDatosHistoriaPorPaciente(idPaciente);
+        
         this.dispose();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

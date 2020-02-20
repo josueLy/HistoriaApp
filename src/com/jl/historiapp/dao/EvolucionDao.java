@@ -8,8 +8,6 @@ package com.jl.historiapp.dao;
 import com.jl.historia.entidad.Evolucion;
 import com.jl.historia.entidad.Historia;
 import com.jl.historia.entidad.Receta;
-import com.jl.historiapp.utilitarios.ExcepcionGeneral;
-import com.jl.historiapp.utilitarios.Mensaje;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +16,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,8 +49,6 @@ public class EvolucionDao {
                     "SELECT e FROM Evolucion e where e.estado=1 and e.id= :id", Evolucion.class);
             query.setParameter("id", idEvolucion);
             evolucion = (Evolucion) query.getSingleResult();
-            if(evolucion==null)
-                JOptionPane.showMessageDialog(null, Mensaje.EVOLUCION_NO_EXISTE);
         } catch (Exception excepcion) {
             System.out.println(excepcion.getMessage());
         }
@@ -71,10 +66,6 @@ public class EvolucionDao {
             query = gestorEntidad.createQuery("SELECT e FROM Evolucion e where e.id= :id");
             query.setParameter("id", id);
             evolucion = (Evolucion) query.getSingleResult();
-            if(evolucion==null){
-               JOptionPane.showMessageDialog(null, Mensaje.EVOLUCION_NO_EXISTE);
-               throw new Exception();
-            }
         } catch (Exception excepcion) {
             System.out.println(excepcion.getMessage());
         }
@@ -88,10 +79,6 @@ public class EvolucionDao {
                     "SELECT e FROM Evolucion e where e.estado=1 and e.historia= :historia ", Evolucion.class);
             query.setParameter("historia", historia);
             evoluciones = query.getResultList();
-            if(evoluciones.isEmpty()){
-                JOptionPane.showMessageDialog(null,Mensaje.LISTA_EVOLUCIONES_VACIA);
-                throw new Exception();
-            }
         } catch (Exception excepcion) {
             System.out.println(excepcion.getMessage());
         }

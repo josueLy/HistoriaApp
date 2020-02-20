@@ -13,10 +13,19 @@ import com.jl.historiapp.controlador.EvolucionControlador;
 import com.jl.historiapp.controlador.HistoriaControlador;
 import com.jl.historiapp.controlador.PacienteControlador;
 import com.jl.historiapp.controlador.RecetaControlador;
+import com.jl.historiapp.servicio.ConexionServicio;
 import com.jl.historiapp.utilitarios.ExcepcionGeneral;
+import com.toedter.calendar.JDateChooser;
+import java.awt.event.KeyEvent;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -44,7 +53,7 @@ public class CRUDHistoria extends javax.swing.JFrame {
 
     public CRUDHistoria() {
         initComponents();
-        
+
         setResizable(false);
         setLocationRelativeTo(null);
         btnAgregarEvolucion.setEnabled(false);
@@ -53,7 +62,7 @@ public class CRUDHistoria extends javax.swing.JFrame {
         cmbSexo.setEnabled(false);
         cmbEstadoCivil.setEnabled(false);
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        
+
         txtFecha.setText(formato.format(new Date()));
     }
 
@@ -146,13 +155,18 @@ public class CRUDHistoria extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtFecha)
                     .addComponent(jLabel6)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         txtEdad.setEditable(false);
         txtEdad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEdadActionPerformed(evt);
+            }
+        });
+        txtEdad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEdadKeyTyped(evt);
             }
         });
 
@@ -164,6 +178,11 @@ public class CRUDHistoria extends javax.swing.JFrame {
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
+            }
+        });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
             }
         });
 
@@ -179,6 +198,11 @@ public class CRUDHistoria extends javax.swing.JFrame {
         txtDNI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDNIActionPerformed(evt);
+            }
+        });
+        txtDNI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDNIKeyTyped(evt);
             }
         });
 
@@ -215,33 +239,33 @@ public class CRUDHistoria extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
+                        .addGap(10, 10, 10)
                         .addComponent(jLabel12))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel2))
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel11)))))
+                            .addComponent(jLabel11)))
+                    .addComponent(cmbSexo))
+                .addContainerGap())
         );
 
         txaMotivo.setEditable(false);
@@ -346,6 +370,7 @@ public class CRUDHistoria extends javax.swing.JFrame {
         jScrollPane4.setViewportView(txaReceta);
 
         btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3-Gray-Printer-icon.png"))); // NOI18N
+        btnImprimir.setEnabled(false);
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImprimirActionPerformed(evt);
@@ -360,58 +385,58 @@ public class CRUDHistoria extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 26, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(74, 74, 74)
                         .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(75, 75, 75)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70)
-                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(89, 89, 89))))
+                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 26, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnAgregarRecetas)
-                            .addGap(28, 28, 28)
-                            .addComponent(btnVerReceta))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(118, 118, 118)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnAgregarEvolucion)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnVerEvolucion)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(237, 237, 237)
+                        .addGap(118, 118, 118)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(btnAgregarEvolucion)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnVerEvolucion)))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(400, 400, 400)
+                                .addComponent(btnAgregarRecetas)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnVerReceta))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(239, 239, 239)
                         .addComponent(btnGuardar)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -420,47 +445,45 @@ public class CRUDHistoria extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, Short.MAX_VALUE)
-                            .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)))
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(btnAgregarEvolucion)
                     .addComponent(btnVerEvolucion))
                 .addGap(2, 2, 2)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnVerReceta)
                         .addComponent(btnAgregarRecetas)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnGuardar)
                 .addContainerGap())
         );
@@ -473,75 +496,86 @@ public class CRUDHistoria extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (transaccion == 1) {
-            Paciente paciente = new Paciente();
-            paciente.setDni(txtDNI.getText());
-            paciente.setNombre(txtNombre.getText());
-            paciente.setEdad(Integer.parseInt(txtEdad.getText()));
-            paciente.setSexo(cmbSexo.getSelectedItem().toString());
-            paciente.setEstaoCivil(cmbEstadoCivil.getSelectedItem().toString());
-            paciente = pacienteControlador.guardarPaciente(paciente);
-
-            Historia historia = new Historia();
-            historia.setPacienteId(paciente);
-            historia.setMotivo(txaMotivo.getText());
-            historia.setEnfermedadActual(txaEnfermedad.getText());
-            historia.setDiagnostico(txaDiagnostico.getText());
-
-            historia = historiaControlador.guardarHistoria(historia);
-
-            evolucion = new Evolucion();
-            evolucion.setDescripcion(txaReceta.getText());
-            evolucion.setHistoriaId(historia);
-            evolucionControlador.guardarEvolucion(evolucion);
-
-            receta = new Receta();
-            receta.setFecha(new Date());
-            receta.setMedicinas(txaReceta.getText());
-            receta.setHistorias(historia);
-            recetaControlador.guaradarReceta(receta);
-            txtCodigo.setText(historia.getCodigoHistoria());
-
+        
+        if (txtDNI.getText().equals("") || txtNombre.getText().equals("") || txtEdad.getText().equals("") || txaMotivo.getText().equals("") || txaEnfermedad.getText().equals("") || txaDiagnostico.getText().equals("") || txaEvolucion.getText().equals("") || txaReceta.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Todos los campos en este formulario deben ser llenados");
         } else {
-            paciente.setDni(txtDNI.getText());
-            paciente.setNombre(txtNombre.getText());
-            paciente.setEdad(Integer.parseInt(txtEdad.getText()));
-            paciente.setSexo(cmbSexo.getSelectedItem().toString());
-            paciente.setEstaoCivil(cmbEstadoCivil.getSelectedItem().toString());
-            paciente = pacienteControlador.guardarPaciente(paciente);
+            if (txtDNI.getText().length() < 9) {
+                if (Integer.parseInt(txtEdad.getText()) <= 150) {
+                    if (transaccion == 1) {
+                        Paciente paciente = new Paciente();
+                        paciente.setDni(txtDNI.getText());
+                        paciente.setNombre(txtNombre.getText());
+                        paciente.setEdad(Integer.parseInt(txtEdad.getText()));
+                        paciente.setSexo(cmbSexo.getSelectedItem().toString());
+                        paciente.setEstaoCivil(cmbEstadoCivil.getSelectedItem().toString());
+                        paciente = pacienteControlador.guardarPaciente(paciente);
 
-            historia.setPacienteId(paciente);
-            historia.setMotivo(txaMotivo.getText());
-            historia.setEnfermedadActual(txaEnfermedad.getText());
-            historia.setDiagnostico(txaDiagnostico.getText());
+                        Historia historia = new Historia();
+                        historia.setPacienteId(paciente);
+                        historia.setMotivo(txaMotivo.getText());
+                        historia.setEnfermedadActual(txaEnfermedad.getText());
+                        historia.setDiagnostico(txaDiagnostico.getText());
 
-            historia = historiaControlador.guardarHistoria(historia);
-            if (transaccionEvolucion == 1) {
-                evolucionControlador.guardarEvolucion(evolucion);
-            }
-            if (transaccionReceta == 1) {
-                recetaControlador.guaradarReceta(receta);
+                        historia = historiaControlador.guardarHistoria(historia);
+
+                        evolucion = new Evolucion();
+                        evolucion.setDescripcion(txaReceta.getText());
+                        evolucion.setHistoriaId(historia);
+                        evolucionControlador.guardarEvolucion(evolucion);
+
+                        receta = new Receta();
+                        receta.setFecha(new Date());
+                        receta.setMedicinas(txaReceta.getText());
+                        receta.setHistorias(historia);
+                        recetaControlador.guaradarReceta(receta);
+                        txtCodigo.setText(historia.getCodigoHistoria());
+
+                    } else {
+                        paciente.setDni(txtDNI.getText());
+                        paciente.setNombre(txtNombre.getText());
+                        paciente.setEdad(Integer.parseInt(txtEdad.getText()));
+                        paciente.setSexo(cmbSexo.getSelectedItem().toString());
+                        paciente.setEstaoCivil(cmbEstadoCivil.getSelectedItem().toString());
+                        paciente = pacienteControlador.guardarPaciente(paciente);
+
+                        historia.setPacienteId(paciente);
+                        historia.setMotivo(txaMotivo.getText());
+                        historia.setEnfermedadActual(txaEnfermedad.getText());
+                        historia.setDiagnostico(txaDiagnostico.getText());
+
+                        historia = historiaControlador.guardarHistoria(historia);
+                        if (transaccionEvolucion == 1) {
+                            evolucionControlador.guardarEvolucion(evolucion);
+                        }
+                        if (transaccionReceta == 1) {
+                            recetaControlador.guaradarReceta(receta);
+                        }
+                    }
+
+                    txtDNI.setEditable(true);
+                    txtNombre.setEditable(true);
+                    txtEdad.setEditable(true);
+                    cmbSexo.setEditable(true);
+                    cmbEstadoCivil.setEditable(true);
+                    txaMotivo.setEditable(true);
+                    txaEnfermedad.setEditable(true);
+                    txaDiagnostico.setEditable(true);
+                    txaEvolucion.setEditable(true);
+                    txaReceta.setEditable(true);
+                    cmbSexo.setEnabled(true);
+                    cmbEstadoCivil.setEnabled(true);
+                    btnAgregarEvolucion.setEnabled(true);
+                    btnVerEvolucion.setEnabled(true);
+                    btnVerReceta.setEnabled(true);
+                    btnAgregarRecetas.setEnabled(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "La edad no puede ser mayor a 150 años");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El dni no puede ser mayor a 8 dígitos");
             }
         }
-        
-        txtDNI.setEditable(true);
-        txtNombre.setEditable(true);
-        txtEdad.setEditable(true);
-        cmbSexo.setEditable(true);
-        cmbEstadoCivil.setEditable(true);
-        txaMotivo.setEditable(true);
-        txaEnfermedad.setEditable(true);
-        txaDiagnostico.setEditable(true);
-        txaEvolucion.setEditable(true);
-        txaReceta.setEditable(true);
-        cmbSexo.setEnabled(true);
-        cmbEstadoCivil.setEnabled(true);
-        btnAgregarEvolucion.setEnabled(true);
-        btnVerEvolucion.setEnabled(true);
-        btnVerReceta.setEnabled(true);
-        btnAgregarRecetas.setEnabled(true);
-
-
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -564,7 +598,7 @@ public class CRUDHistoria extends javax.swing.JFrame {
         txaReceta.setEditable(true);
         txaReceta.setText("");
         btnGuardar.setEnabled(true);
-        
+        btnImprimir.setEnabled(false);
         transaccion = 1;
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -590,21 +624,22 @@ public class CRUDHistoria extends javax.swing.JFrame {
         txaEvolucion.setText("");
         txaReceta.setText("");
         transaccion = 2;
-        String[] botones = {"Buscar por Paciente", "Busca por Código de Historia","Cancelar"};
+        String[] botones = {"Buscar por Paciente", "Busca por Código de Historia", "Cancelar"};
         int variable = JOptionPane.showOptionDialog(null, "¿Como Desea Buscar la Historia?", "Busqueda de Historias", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, botones, botones[0]);
         if (variable == 0) {
             ListaPacientes listaPacientes = new ListaPacientes(this);
             listaPacientes.setVisible(true);
             btnGuardar.setEnabled(true);
             configurarControles(true);
-            
-        } else if(variable==1){
+
+        } else if (variable == 1) {
             ListarHistorias listarHistorias = new ListarHistorias(this);
             listarHistorias.setVisible(true);
             configurarControles(true);
-        }else{
+        } else {
             //
         }
+        
 
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -649,18 +684,62 @@ public class CRUDHistoria extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         new ListarHistorias(this).setVisible(true);
-        transaccion=3;
+        transaccion = 3;
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        transaccion=4;
+        transaccion = 4;
         new ListarHistorias(this).setVisible(true);
-        
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        // TODO add your handling code here:
+        try {
+            
+            String rutaReporte= "C:\\receta.jasper";
+         
+            JDateChooser jd = new JDateChooser();
+            String message ="Ingrese la fecha de la próxima consulta:\n";
+            Object[] params = {message,jd};
+            JOptionPane.showConfirmDialog(null,params,"Fecha de la próxima consulta", JOptionPane.PLAIN_MESSAGE);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date fecha= jd.getDate();
+            
+            Map parametros = new HashMap();
+            parametros.put("prox_consulta", fecha);
+            parametros.put("receta",receta.getId());
+            
+            // se muestra en una ventana aparte para su descarga
+            JasperPrint jasperPrintWindow = JasperFillManager.fillReport(
+                    rutaReporte, parametros,
+                    ConexionServicio.conectar());
+            JasperViewer jasperViewer = new JasperViewer(jasperPrintWindow,false);
+            jasperViewer.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }//GEN-LAST:event_btnImprimirActionPerformed
+
+    private void txtDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDNIKeyTyped
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDNIKeyTyped
+
+    private void txtEdadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEdadKeyTyped
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtEdadKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        if (!Character.isLetter(evt.getKeyChar()) && !(evt.getKeyChar() == KeyEvent.VK_SPACE) && !(evt.getKeyChar() == KeyEvent.VK_BACK_SPACE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
 
     public void llenarDatosHistoriaPorPaciente(int idPaciente) {
 
@@ -678,8 +757,8 @@ public class CRUDHistoria extends javax.swing.JFrame {
         txaEvolucion.setText(evolucion.getDescripcion());
         receta = recetaControlador.mostrarUltimaReceta(historia);
         txaReceta.setText(receta.getMedicinas());
+        btnImprimir.setEnabled(true);
     }
-    
 
     public void llenarEvolucion(int idEvolucion) {
         evolution = evolucionControlador.obtenerEvolucionPorId(idEvolucion);
@@ -691,8 +770,8 @@ public class CRUDHistoria extends javax.swing.JFrame {
         txaReceta.setText("");
         txaReceta.append(receta.getMedicinas());
     }
-    
-    public void configurarControles(boolean flag){
+
+    public void configurarControles(boolean flag) {
         btnAgregarEvolucion.setEnabled(flag);
         btnAgregarRecetas.setEnabled(flag);
         btnVerEvolucion.setEnabled(flag);
@@ -708,7 +787,7 @@ public class CRUDHistoria extends javax.swing.JFrame {
         btnGuardar.setEnabled(flag);
         cmbSexo.setEnabled(flag);
         cmbEstadoCivil.setEnabled(flag);
-        
+
     }
 
     /**

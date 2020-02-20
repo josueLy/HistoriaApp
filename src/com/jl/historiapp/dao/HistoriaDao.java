@@ -16,6 +16,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -47,7 +48,7 @@ public class HistoriaDao {
             gestorEntidad.persist(historia);
             gestorEntidad.flush();
             entidadTransaccion.commit();
-
+            JOptionPane.showMessageDialog(null,"Guardado con Éxito");    
         } catch (Exception excepcion) {
             System.out.println(excepcion.getMessage());
         }

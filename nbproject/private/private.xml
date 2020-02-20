@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/spring/HistoriaApp/src/reportes/Receta.jrxml</file>
+            <file>file:/D:/Josue/Cachuelos/HistoriaApp/src/com/jl/historiapp/vista/ListarHistorias.java</file>
+            <file>file:/D:/Josue/Cachuelos/HistoriaApp/src/com/jl/historiapp/vista/ListaPacientes.java</file>
+            <file>file:/D:/Josue/Cachuelos/HistoriaApp/src/com/jl/historiapp/vista/CRUDHistoria.java</file>
+            <file>file:/D:/Josue/Cachuelos/HistoriaApp/src/com/jl/historiapp/dao/HistoriaDao.java</file>
         </group>
     </open-files>
 </project-private>
