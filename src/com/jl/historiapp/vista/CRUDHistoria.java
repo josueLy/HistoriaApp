@@ -37,7 +37,7 @@ public class CRUDHistoria extends javax.swing.JFrame {
      * Creates new form GuardaPaciente
      */
     public int transaccion;
-
+    //hola mundo!!!!
     private PacienteControlador pacienteControlador = new PacienteControlador();
     private HistoriaControlador historiaControlador = new HistoriaControlador();
     private RecetaControlador recetaControlador = new RecetaControlador();
